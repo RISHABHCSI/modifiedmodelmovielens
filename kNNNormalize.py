@@ -35,26 +35,26 @@ def classify0(inX,dataSet,k):
 	# # print sortedClassCount[0][0]
 	# return sortedClassCount[0][0]
 
-def file2matrix(filename):
-	fr=open(filename)
-	arrayOfLines=fr.readlines()
-	numberOfLines=len(arrayOfLines)
-	returnMat=zeros((numberOfLines,3))
-	classLabelVector=[]
-	i=0
-	for line in arrayOfLines:
-		listFromLine=line.split('\t')
-		returnMat[i,:]=listFromLine[0:3]
-		classLabelVector.append(int(listFromLine[-1]))
-		i+=1
-	return returnMat,classLabelVector
+# def file2matrix(filename):
+# 	fr=open(filename)
+# 	arrayOfLines=fr.readlines()
+# 	numberOfLines=len(arrayOfLines)
+# 	returnMat=zeros((numberOfLines,3))
+# 	classLabelVector=[]
+# 	i=0
+# 	for line in arrayOfLines:
+# 		listFromLine=line.split('\t')
+# 		returnMat[i,:]=listFromLine[0:3]
+# 		classLabelVector.append(int(listFromLine[-1]))
+# 		i+=1
+# 	return returnMat,classLabelVector
 
 def normalize(dataSet):
-	minVals=dataSet.min(0)
+	minVals=1
 	maxVals=dataSet.max(0)
 	ranges=maxVals-minVals
 	m=dataSet.shape[0]
-	dataSet=(dataSet-tile(minVals,(m,1)))/tile(ranges,(m,1))
+	dataSet=float(dataSet-tile(minVals,(m,1)))/tile(ranges,(m,1))
 	return dataSet,ranges,minVals
 	# return dataSet
 

@@ -1,4 +1,6 @@
+import loadData
 from numpy import *
+from sklearn import *
 import operator
 import matplotlib
 import matplotlib.pyplot as plt
@@ -8,9 +10,27 @@ import loadData
 import math
 pred_rating=[]
 
+trainData=minor2.test()
+
+def pca(dataSet,k):# taking k dimensions
+	meanValues=mean(dataSet,axis=0)#1Xn
+	dataSet=mat(dataSet)
+	dataSet=dataSet-meanValues
+	m=shape(dataSet)[0]
+	n=shape(dataSet)[1]
+	covMat=(1.0/943)*(dataSet.T)*dataSet # nXn
+	u,s,v=linalg.svd(mat(covMat),full_matrices=True)
+	uReduced=u[:,:]#nXm
+	z=dataSet*uReduced
+	return z
+
+
+
 def classify0(inX,dataSet,k):
 	dataSetSize=shape(dataSet)[0] # dataSet.shape[0]
 	tempMat=tile(dataSet[inX[0],:],(dataSetSize,1))
+	dataSet=array(dataSet)
+	tempMat=array(tempMat)
 	diffMat=dataSet-tempMat
 	sqDiffMat=diffMat**2
 	sqDistances=sqDiffMat.sum(axis=1)
@@ -19,8 +39,8 @@ def classify0(inX,dataSet,k):
 	num=0
 	sortedDistIndicies=argsort(distances) # distance.argsort()
 	for i in range(k):
-		if dataSet[sortedDistIndicies[i]][inX[1]]!=0:
-			summation+=dataSet[sortedDistIndicies[i]][inX[1]]
+		if trainData[sortedDistIndicies[i]][inX[1]]!=0:
+			summation+=trainData[sortedDistIndicies[i]][inX[1]]
 			num+=1
 	if num!=0:
 		avg=summation/num
@@ -28,13 +48,13 @@ def classify0(inX,dataSet,k):
 	else:
 		return 3
 
-def normalize(dataSet):
-	minVals=dataSet.min(0)
-	maxVals=dataSet.max(0)
-	ranges=maxVals-minVals
-	m=dataSet.shape[0]
-	dataSet=(dataSet-tile(minVals,(m,1)))/tile(ranges,(m,1))
-	return dataSet,ranges,minVals
+# def normalize(dataSet):
+# 	minVals=dataSet.min(0)
+# 	maxVals=dataSet.max(0)
+# 	ranges=maxVals-minVals
+# 	m=dataSet.shape[0]
+# 	dataSet=(dataSet-tile(minVals,(m,1)))/tile(ranges,(m,1))
+# 	return dataSet,ranges,minVals
 
 def classifierTest(dataSet,labels):
 	# ratio=0.10
@@ -42,8 +62,14 @@ def classifierTest(dataSet,labels):
 	neighbour=25
 	# numOfTests=int(m*ratio)
 	# dataSet,ranges,minVals=normalize(dataSet)
-	trainData=loadData.loadTrainingData("u.data")
+	# trainData=loadData.loadTrainingData("u.data")
 	# trainData=minor2.test()
+	# print shape(trainData)
+	ds=pca(trainData,100)
+	# print shape(ds)
+	# return
+	# print shape(trainData)
+	# return
 	numOfErrors=0
 	dictionary={}
 	prev=-1
@@ -51,7 +77,7 @@ def classifierTest(dataSet,labels):
 	for i in range(0,dataSet.shape[0]):
 		user=dataSet[i,0]
 		movie=dataSet[i,1]
-		classifierResult=int(classify0(dataSet[i,:],trainData,neighbour))
+		classifierResult=int(classify0(dataSet[i,:],ds,neighbour))
 		if i==0:
 			prev=user
 			dictionary[movie]=classifierResult

@@ -42,8 +42,8 @@ def classifierTest(dataSet,labels):
 	neighbour=25
 	# numOfTests=int(m*ratio)
 	# dataSet,ranges,minVals=normalize(dataSet)
-	trainData=loadData.loadTrainingData("u.data")
-	# trainData=minor2.test()
+	# trainData=loadData.loadTrainingData("u.data")
+	trainData=minor2.test()
 	numOfErrors=0
 	dictionary={}
 	prev=-1

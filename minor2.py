@@ -90,16 +90,16 @@ def create_pref_model(trainData):
 	# print pref_matrix
 	return pref_matrix
 
-def userBasedKNN(inX,dataSet,k):
-	dataSetSize=shape(dataSet)[0] # dataSet.shape[0]
-	tempMat=tile(inX,(dataSetSize,1))
-	diffMat=dataSet-tempMat
-	sqDiffMat=diffMat**2
-	sqDistances=sqDiffMat.sum(axis=1)
-	distances=sqDistances**(1.0/2)
+# def userBasedKNN(inX,dataSet,k):
+# 	dataSetSize=shape(dataSet)[0] # dataSet.shape[0]
+# 	tempMat=tile(inX,(dataSetSize,1))
+# 	diffMat=dataSet-tempMat
+# 	sqDiffMat=diffMat**2
+# 	sqDistances=sqDiffMat.sum(axis=1)
+# 	distances=sqDistances**(1.0/2)
+#
+# 	sortedDistIndicies=argsort(distances) # distance.argsort()
 
-	sortedDistIndicies=argsort(distances) # distance.argsort()
-	
 	# classCount={}
 	# for i in range(0,k):
 	# 	if labels[sortedDistIndicies[i]] not in classCount:
@@ -115,6 +115,7 @@ def test():
 	# create_pref_model(trainData)
 	pref_matrix = create_pref_model(trainData)
 	# print pref_matrix
+	return pref_matrix
 
 
-test()
+# test()
